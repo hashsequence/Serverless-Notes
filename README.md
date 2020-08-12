@@ -62,8 +62,68 @@ Sparta is a framework that transforms a go application into a self-deploying AWS
 
 ## Difference between Serverless and Containers
 
+* Recap : At its core Containers allow you to package up all your code and dependencies into a box, serverless is a model where you dont need to wory about the servers and management of server infrastructure, and its scales as you use up more resources automatically.
+
+* Serverless Services includes:
+
+    - amazon lambda, dynamodb, etc
+
+* container and orchestration services:
+
+    -docker, kuberernetes
+
+* Whats the environment differences
+    - serverless
+
+        - maintained by cloud provider
+
+        - cant install software in underlying environment (but can install code libraries)
+
+    - containers
+        - users can control underlying infrastructure, vm size, os, etc
+        - can install almost any software 
+        - can have prepackaged stuff (docker images)
+    
+* use cases
+    - serverless
+        - event driven architecture
+            - spins up when needed and does its thing and shutsdown
+        - unpredictable traffic, so we only pay what we use
+        - microservices 
+            - code can be modular without software dependencies
+            - more cloud native
+    - containers
+        - faster migration to cloud with other softwares 
+            -webserver, appserver, apps requiring thirdparty software
+        - suited for predictable traffic, since you control resources
+        - microservices
+            -easy to move api with dependencies
+
+
+## How do we build a serverless provider from scratch 
+
+
+As a regular joe with no graduate level experience on serverless architecture, here
+is what I would do with my limited knowledge on serverless architecture based on my research via google and scihub
+
+### Run a Serverless Provider via Docker and Kubernetes 
+
+Problem With this approach is the overhead of when theres a new user and no existing running docker and they need to spin up a new one, this is the cold start 
+overhead. There is also the problem with idle users and causing wasted resources
+
+What OpenWhisk does it spins up multiple containers with the required dependencies to run a function and shutsdown paused containers when its not being used 
+
+So now we must consider how to schedule when to spin up and shutdown containers,
+so we have the question of scheduling 
+
+we also need to consider the problem of state:
+How would we build a system of dealing with a mutable but distributed state
+accross multiple containers starting up and shutting down
+
 
 ## References:
 
 * https://hackernoon.com/what-is-serverless-architecture-what-are-its-pros-and-cons-cc4b804022e9
 
+
+* [Provider-Friendly Serverless Framework For Latency Critical Applications](http://conferences.inf.ed.ac.uk/EuroDW2018/papers/eurodw18-Shillaker.pdf)
